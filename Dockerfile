@@ -29,8 +29,10 @@ RUN pnpm prune --prod
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S discord-bot -u 1001
 
-# Create data directory for SQLite database
-RUN mkdir -p /app/data && chown -R discord-bot:nodejs /app/data
+# Create data directories for SQLite database with proper permissions
+RUN mkdir -p /app/data /app/dist/agents/data && \
+    chown -R discord-bot:nodejs /app/data /app/dist/agents/data && \
+    chmod -R 755 /app/dist/agents/data
 
 # Switch to non-root user
 USER discord-bot

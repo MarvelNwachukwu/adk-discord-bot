@@ -32,9 +32,9 @@ export const getRootAgent = () => {
 			"Use the joke sub-agent for humor requests and the weather sub-agent for weather-related queries. Route user requests to the appropriate sub-agent.",
 		)
 		.withModel(env.LLM_MODEL)
-		.withSessionService(
-			createDatabaseSessionService(getSqliteConnectionString("discord_bot")),
-		)
+		// .withSessionService(
+		// 	createDatabaseSessionService(getSqliteConnectionString("discord_bot")),
+		// )
 		.withSubAgents([jokeAgent, weatherAgent, atpAgent, iqMarketAgent, iqTransactionAgent])
 		.build();
 };
