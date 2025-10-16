@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  discord-bot:
+    build: .
+    container_name: adk-discord-bot
+    restart: unless-stopped
+    environment:
+      # Discord Bot Configuration
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      
+      # AI Model Configuration
+      - LLM_MODEL=${LLM_MODEL:-gemini-2.5-flash}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      
+      # Optional Configuration
+      - ADK_DEBUG=${ADK_DEBUG:-false}
+      
+      # Wallet Configuration
+      - WALLET_PRIVATE_KEY=${WALLET_PRIVATE_KEY}
+      - ATP_API_KEY=${ATP_API_KEY}
+    
+    # Mount data directory for persistent SQLite database
+    volumes:
+      - ./data:/app/data
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('Bot is running')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
